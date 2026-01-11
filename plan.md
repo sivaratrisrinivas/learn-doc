@@ -32,25 +32,25 @@
 
 ## Phase 2: Document Processing
 
-- [ ] **Step 2.1**: Create `src/document/__init__.py` (empty)
+- [x] **Step 2.1**: Create `src/document/__init__.py` (empty)
   - **Test**: `from src.document import *` succeeds
 
-- [ ] **Step 2.2**: Create `src/document/pdf_parser.py` with `PDFParser.parse(file_bytes) -> (text, page_count)`
+- [x] **Step 2.2**: Create `src/document/pdf_parser.py` with `PDFParser.parse(file_bytes) -> (text, page_count)`
   - **Test**: Parse a sample PDF, verify text length > 0 and page_count > 0
 
-- [ ] **Step 2.3**: Add error handling to `PDFParser` for corrupt/invalid PDFs
+- [x] **Step 2.3**: Add error handling to `PDFParser` for corrupt/invalid PDFs
   - **Test**: Pass garbage bytes, verify raises `PDFExtractionError`
 
-- [ ] **Step 2.4**: Create `src/document/chunker.py` with `DocumentChunker.__init__(tokenizer, chunk_size)`
+- [x] **Step 2.4**: Create `src/document/chunker.py` with `DocumentChunker.__init__(tokenizer, chunk_size)`
   - **Test**: Instantiate with TinyLlama tokenizer, no errors
 
-- [ ] **Step 2.5**: Implement `DocumentChunker.chunk(text) -> List[DocumentChunk]`
+- [x] **Step 2.5**: Implement `DocumentChunker.chunk(text) -> List[DocumentChunk]`
   - **Test**: Chunk a 5000-token text with chunk_size=2048, get 3 chunks, each ≤2048 tokens
 
-- [ ] **Step 2.6**: Verify chunker preserves all tokens (no content lost)
+- [x] **Step 2.6**: Verify chunker preserves all tokens (no content lost)
   - **Test**: Concatenate all chunk token_ids, compare to original tokenization
 
-- [ ] **Step 2.7**: Create `src/document/validator.py` with `DocumentValidator.validate(file_bytes, constraints)`
+- [x] **Step 2.7**: Create `src/document/validator.py` with `DocumentValidator.validate(file_bytes, constraints)`
   - **Test**: Pass 200-page PDF, get `(False, "exceeds max_pages")`
 
 ---
