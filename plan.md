@@ -141,7 +141,7 @@
 - [x] **Step 6.3**: Implement `MetricsTracker.get_metrics() -> LearningMetrics`
   - **Test**: Record losses, get metrics, verify `initial_loss` and `final_loss` correct
 
-- [ ] **Step 6.4**: Create `src/learning/trainer.py` with `TTTTrainer.__init__(model, config)`
+- [x] **Step 6.4**: Create `src/learning/trainer.py` with `TTTTrainer.__init__(model, config)`
   - **Test**: Instantiate with model and config
 
 - [ ] **Step 6.5**: Implement `TTTTrainer.train_on_document(document)` - orchestrate learning

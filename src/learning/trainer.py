@@ -10,9 +10,10 @@ Phase 6 builds a thin trainer that wires together:
 from __future__ import annotations
 
 from dataclasses import dataclass
+from time import perf_counter
 from typing import TYPE_CHECKING
 
-from src.config import LearningConfig
+from src.config import Document, LearningConfig
 from src.learning.metrics import MetricsTracker
 
 if TYPE_CHECKING:
@@ -40,5 +41,41 @@ class TTTTrainer:
             self.model,
             inner_lr=self.config.inner_lr,
             max_grad_norm=self.config.max_grad_norm,
+        )
+
+    def train_on_document(self, document: Document) -> "LearningMetrics":
+        """
+        Orchestrate learning over all chunks of a document.
+
+        Step 6.5 target:
+        - iterate chunks
+        - compute loss per chunk + apply update (via LaCTUpdater)
+        - return LearningMetrics with final_loss < initial_loss (usually)
+        """
+        from src.config import LearningMetrics  # avoid heavy imports at module import time
+
+        # Reset per-run state
+        self.metrics = MetricsTracker()
+        self.updater.reset()
+        self.model.reset_learning()
+
+        t0 = perf_counter()
+
+        tokens_processed = 0
+        for chunk in document.chunks:
+            tokens_processed += int(chunk.token_count)
+            loss = self.updater.process_chunk(chunk.token_ids)
+            self.updater.apply_update()
+            self.metrics.record_loss(loss)
+
+        t1 = perf_counter()
+
+        # Weight delta across all TTT layers
+        weight_delta = float(self.model.get_total_weight_delta())
+
+        return self.metrics.get_metrics(
+            tokens_processed=tokens_processed,
+            learning_time_seconds=(t1 - t0),
+            weight_delta_norm=weight_delta,
         )
 
