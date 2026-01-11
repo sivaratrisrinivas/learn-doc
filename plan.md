@@ -154,7 +154,7 @@
 
 ## Phase 7: Inference
 
-- [ ] **Step 7.1**: Create `src/inference/__init__.py` (empty)
+- [x] **Step 7.1**: Create `src/inference/__init__.py` (empty)
   - **Test**: `from src.inference import *` succeeds
 
 - [ ] **Step 7.2**: Create `src/inference/generator.py` with `Generator.__init__(model, tokenizer)`
