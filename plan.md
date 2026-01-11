@@ -113,7 +113,7 @@
 
 ## Phase 5: LaCT (Large Chunk TTT)
 
-- [ ] **Step 5.1**: Create `src/models/lact.py` with `LaCTUpdater` class skeleton
+- [x] **Step 5.1**: Create `src/models/lact.py` with `LaCTUpdater` class skeleton
   - **Test**: Class imports without errors
 
 - [ ] **Step 5.2**: Implement `LaCTUpdater.process_chunk(tokens)` - forward + compute loss
