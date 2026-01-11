@@ -73,3 +73,42 @@ class Generator:
             tokens_generated=tokens_generated,
             generation_time_seconds=t1 - t0,
         )
+    
+    def compare(
+        self,
+        prompt: str,
+        max_tokens: int = 256,
+        temperature: float = 0.7,
+    ) -> tuple[Answer, Answer]:
+        """
+        Compare TTT (learned) vs base (reset) model answers.
+        
+        Args:
+            prompt: Input text/question
+            max_tokens: Maximum tokens to generate
+            temperature: Sampling temperature
+            
+        Returns:
+            (ttt_answer, base_answer) - TTT uses learned weights, base uses initial
+        """
+        import torch
+        
+        # 1. Generate with current (learned) TTT weights
+        ttt_answer = self.generate(prompt, max_tokens, temperature)
+        
+        # 2. Save learned weights, reset to base, generate, restore
+        saved_weights = []
+        for layer in self.model.ttt_layers:
+            saved_weights.append(layer.W_h.data.clone())
+        
+        # Reset to initial (base) weights
+        self.model.reset_learning()
+        
+        # Generate with base weights
+        base_answer = self.generate(prompt, max_tokens, temperature)
+        
+        # Restore learned weights
+        for layer, saved_w in zip(self.model.ttt_layers, saved_weights):
+            layer.W_h.data.copy_(saved_w)
+        
+        return ttt_answer, base_answer

@@ -163,7 +163,7 @@
 - [x] **Step 7.3**: Implement `Generator.generate(prompt, max_tokens, temperature) -> Answer`
   - **Test**: Generate answer, verify `Answer.text` is non-empty string
 
-- [ ] **Step 7.4**: Implement `Generator.compare(prompt) -> (ttt_answer, base_answer)`
+- [x] **Step 7.4**: Implement `Generator.compare(prompt) -> (ttt_answer, base_answer)`
   - **Test**: After learning, compare returns two different answers
 
 ---
