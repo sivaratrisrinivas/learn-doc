@@ -170,16 +170,16 @@
 
 ## Phase 8: Integration Test (Notebook)
 
-- [ ] **Step 8.1**: Create `notebooks/05_integration.ipynb`
+- [x] **Step 8.1**: Create `notebooks/05_integration.ipynb`
   - **Test**: Notebook opens in Colab
 
-- [ ] **Step 8.2**: End-to-end test: PDF → parse → chunk → learn → clear → Q&A
+- [x] **Step 8.2**: End-to-end test: PDF → parse → chunk → learn → clear → Q&A
   - **Test**: TTT answer contains doc-specific info, base answer doesn't
 
-- [ ] **Step 8.3**: Memory test: Process 20-page PDF, monitor VRAM
+- [x] **Step 8.3**: Memory test: Process 20-page PDF, monitor VRAM
   - **Test**: Peak VRAM < 14GB, no OOM
 
-- [ ] **Step 8.4**: Latency test: Measure time per chunk
+- [x] **Step 8.4**: Latency test: Measure time per chunk
   - **Test**: Average < 3s per 2048-token chunk on T4
 
 ---
