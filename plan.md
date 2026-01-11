@@ -116,16 +116,16 @@
 - [x] **Step 5.1**: Create `src/models/lact.py` with `LaCTUpdater` class skeleton
   - **Test**: Class imports without errors
 
-- [ ] **Step 5.2**: Implement `LaCTUpdater.process_chunk(tokens)` - forward + compute loss
+- [x] **Step 5.2**: Implement `LaCTUpdater.process_chunk(tokens)` - forward + compute loss
   - **Test**: Process 2048 tokens, get scalar loss value
 
-- [ ] **Step 5.3**: Implement gradient accumulation across chunk
+- [x] **Step 5.3**: Implement gradient accumulation across chunk
   - **Test**: Process chunk, verify accumulated gradients are non-None
 
-- [ ] **Step 5.4**: Implement `LaCTUpdater.apply_update()` - single weight update from accumulated grads
+- [x] **Step 5.4**: Implement `LaCTUpdater.apply_update()` - single weight update from accumulated grads
   - **Test**: Process chunk, apply update, verify `get_weight_delta() > 0`
 
-- [ ] **Step 5.5**: Implement `LaCTUpdater.process_document(chunks)` - loop over all chunks
+- [x] **Step 5.5**: Implement `LaCTUpdater.process_document(chunks)` - loop over all chunks
   - **Test**: Process 5 chunks, verify weights updated, loss decreases
 
 ---
