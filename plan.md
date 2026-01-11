@@ -138,7 +138,7 @@
 - [x] **Step 6.2**: Create `src/learning/metrics.py` with `MetricsTracker` class
   - **Test**: Instantiate, call `record_loss(0.5)`, verify `loss_history == [0.5]`
 
-- [ ] **Step 6.3**: Implement `MetricsTracker.get_metrics() -> LearningMetrics`
+- [x] **Step 6.3**: Implement `MetricsTracker.get_metrics() -> LearningMetrics`
   - **Test**: Record losses, get metrics, verify `initial_loss` and `final_loss` correct
 
 - [ ] **Step 6.4**: Create `src/learning/trainer.py` with `TTTTrainer.__init__(model, config)`
