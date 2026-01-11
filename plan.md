@@ -19,13 +19,13 @@
 
 ## Phase 1: Data Models
 
-- [ ] **Step 1.1**: Create `src/config.py` with Pydantic models: `DocumentChunk`, `Document`, `DocumentConstraints`
+- [x] **Step 1.1**: Create `src/config.py` with Pydantic models: `DocumentChunk`, `Document`, `DocumentConstraints`
   - **Test**: Instantiate each model with sample data, no validation errors
 
-- [ ] **Step 1.2**: Add `LearningConfig`, `LearningMetrics` models to `src/config.py`
+- [x] **Step 1.2**: Add `LearningConfig`, `LearningMetrics` models to `src/config.py`
   - **Test**: Instantiate with defaults, verify default values match spec
 
-- [ ] **Step 1.3**: Add `Question`, `Answer`, `ComparisonResult` models to `src/config.py`
+- [x] **Step 1.3**: Add `Question`, `Answer`, `ComparisonResult` models to `src/config.py`
   - **Test**: Instantiate each, serialize to JSON, deserialize back
 
 ---
