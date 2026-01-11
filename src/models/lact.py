@@ -74,14 +74,19 @@ class LaCTUpdater:
         input_ids = tokens[:, :-1]
         target_ids = tokens[:, 1:]
         
+        # Zero existing gradients
+        for ttt_layer in self.model.ttt_layers:
+            if ttt_layer.W_h.grad is not None:
+                ttt_layer.W_h.grad.zero_()
+        
         # Forward pass through model (get logits)
-        # Enable gradient computation for W_h parameters
         outputs = self.model.model(input_ids=input_ids, use_cache=False)
         logits = outputs.logits  # [batch, seq, vocab]
         
-        # Compute cross-entropy loss
+        # Compute cross-entropy loss in FP32 for numerical stability
+        logits_fp32 = logits.float()
         loss = nn.functional.cross_entropy(
-            logits.view(-1, logits.size(-1)),
+            logits_fp32.view(-1, logits_fp32.size(-1)),
             target_ids.view(-1),
             reduction='mean'
         )
@@ -89,23 +94,20 @@ class LaCTUpdater:
         loss_value = loss.item()
         self._loss_history.append(loss_value)
         
+        # Backward pass to compute gradients
+        loss.backward()
+        
         # Step 5.3: Accumulate gradients for each TTT layer's W_h
-        # Compute gradients w.r.t. W_h in each TTT layer
         for i, ttt_layer in enumerate(self.model.ttt_layers):
-            if ttt_layer.W_h.requires_grad:
-                # Compute gradient
-                grad = torch.autograd.grad(
-                    loss, 
-                    ttt_layer.W_h, 
-                    retain_graph=(i < len(self.model.ttt_layers) - 1),
-                    allow_unused=True
-                )[0]
+            if ttt_layer.W_h.grad is not None:
+                grad = ttt_layer.W_h.grad.clone()
+                # Convert to FP32 for stable accumulation
+                grad = grad.float()
                 
-                if grad is not None:
-                    if self._accumulated_grads[i] is None:
-                        self._accumulated_grads[i] = grad.clone()
-                    else:
-                        self._accumulated_grads[i] += grad
+                if self._accumulated_grads[i] is None:
+                    self._accumulated_grads[i] = grad
+                else:
+                    self._accumulated_grads[i] += grad
         
         return loss_value
     
@@ -119,8 +121,11 @@ class LaCTUpdater:
                 if grad is not None:
                     # Clip gradient
                     grad_norm = torch.norm(grad)
-                    if grad_norm > self.max_grad_norm:
+                    if grad_norm > self.max_grad_norm and grad_norm > 0:
                         grad = grad * (self.max_grad_norm / grad_norm)
+                    
+                    # Convert grad to same dtype as W_h
+                    grad = grad.to(dtype=ttt_layer.W_h.dtype)
                     
                     # Update W_h
                     ttt_layer.W_h.data -= self.inner_lr * grad
